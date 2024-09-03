@@ -200,57 +200,65 @@ const Home = ({ setIsAuthenticated }) => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {data.map((item, index) => (
-                  <TableRow key={index}>
-                    <TableCell>
-                      <Stack direction="row" spacing={2} alignItems="center">
-                        <Avatar sx={{ bgcolor: "#2196F3" }}>
-                          {item.name?.charAt(0)}
-                        </Avatar>
-                        <Typography>{item.name}</Typography>
-                      </Stack>
-                    </TableCell>
-                    <TableCell align="center">{item.subject}</TableCell>
-                    <TableCell align="center">{item.marks}</TableCell>
-                    <TableCell align="center">
-                      <IconButton
-                        onClick={(event) => {
-                          setSelectedStudentId(item._id);
-                          fetchStudentById(item._id);
-                          handleClick(event);
-                        }}
-                      >
-                        <ArrowDropDownCircleRoundedIcon
-                          sx={{ borderRadius: "50%", color: "#333" }}
-                        />
-                      </IconButton>
-                      <Menu
-                        anchorEl={anchorEl}
-                        open={Boolean(anchorEl)}
-                        onClose={handleCloseAction}
-                        PaperProps={{
-                          elevation: 1,
-                          sx: {
-                            "& .MuiMenuItem-root": {
-                              minHeight: "32px",
-                              minWidth: "150px",
-                            },
-                          },
-                        }}
-                      >
-                        <MenuItem
-                          onClick={() => {
-                            handleCloseAction();
-                            handleOpen();
+                {data.length > 0 ? (
+                  data.map((item, index) => (
+                    <TableRow key={index}>
+                      <TableCell>
+                        <Stack direction="row" spacing={2} alignItems="center">
+                          <Avatar sx={{ bgcolor: "#2196F3" }}>
+                            {item.name?.charAt(0)}
+                          </Avatar>
+                          <Typography>{item.name}</Typography>
+                        </Stack>
+                      </TableCell>
+                      <TableCell align="center">{item.subject}</TableCell>
+                      <TableCell align="center">{item.marks}</TableCell>
+                      <TableCell align="center">
+                        <IconButton
+                          onClick={(event) => {
+                            setSelectedStudentId(item._id);
+                            fetchStudentById(item._id);
+                            handleClick(event);
                           }}
                         >
-                          Edit
-                        </MenuItem>
-                        <MenuItem onClick={handleDelete}>Delete</MenuItem>
-                      </Menu>
+                          <ArrowDropDownCircleRoundedIcon
+                            sx={{ borderRadius: "50%", color: "#333" }}
+                          />
+                        </IconButton>
+                        <Menu
+                          anchorEl={anchorEl}
+                          open={Boolean(anchorEl)}
+                          onClose={handleCloseAction}
+                          PaperProps={{
+                            elevation: 1,
+                            sx: {
+                              "& .MuiMenuItem-root": {
+                                minHeight: "32px",
+                                minWidth: "150px",
+                              },
+                            },
+                          }}
+                        >
+                          <MenuItem
+                            onClick={() => {
+                              handleCloseAction();
+                              handleOpen();
+                            }}
+                          >
+                            Edit
+                          </MenuItem>
+                          <MenuItem onClick={handleDelete}>Delete</MenuItem>
+                        </Menu>
+                      </TableCell>
+                    </TableRow>
+                  ))
+                ) : (
+                  <TableRow>
+                    <TableCell colSpan={4} align="center">
+                      No Student Data
                     </TableCell>
                   </TableRow>
-                ))}
+                )}
               </TableBody>
             </Table>
           </TableContainer>

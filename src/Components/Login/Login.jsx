@@ -76,6 +76,7 @@ const Login = ({ onLogin }) => {
           <TextField
             label="Username"
             variant="outlined"
+            placeholder="Username"
             fullWidth
             margin="normal"
             value={username}
@@ -91,6 +92,7 @@ const Login = ({ onLogin }) => {
           <TextField
             label="Password"
             variant="outlined"
+            placeholder="Password"
             fullWidth
             margin="normal"
             type={passwordVisible ? "text" : "password"}
