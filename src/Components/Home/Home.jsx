@@ -1,13 +1,35 @@
 import React, { useEffect, useState } from "react";
-import "./Home.css";
 import axios from "axios";
-import { Modal, Box, TextField, Button, InputAdornment } from "@mui/material";
+import {
+  Box,
+  Button,
+  Card,
+  CardContent,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  IconButton,
+  Menu,
+  MenuItem,
+  Stack,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  TextField,
+  Typography,
+  Avatar,
+  AppBar,
+  Toolbar,
+  InputAdornment,
+} from "@mui/material";
 import { User } from "lucide-react";
 import SubjectIcon from "@mui/icons-material/Subject";
-import BookmarkIcon from "@mui/icons-material/Bookmark";
+import BookmarkBorderOutlinedIcon from "@mui/icons-material/BookmarkBorderOutlined";
 import ArrowDropDownCircleRoundedIcon from "@mui/icons-material/ArrowDropDownCircleRounded";
-import Menu from "@mui/material/Menu";
-import MenuItem from "@mui/material/MenuItem";
 
 const Home = ({ setIsAuthenticated }) => {
   const [data, setData] = useState([]);
@@ -35,29 +57,15 @@ const Home = ({ setIsAuthenticated }) => {
     setAnchorEl(null);
   };
 
-  const style = {
-    position: "absolute",
-    top: "50%",
-    left: "50%",
-    transform: "translate(-50%, -50%)",
-    width: 400,
-    bgcolor: "background.paper",
-    boxShadow: 24,
-    padding: "4% 8%",
-  };
-
-  // Fetch all students
   const fetchStudents = async () => {
     try {
       const token = localStorage.getItem("token");
-      console.log("TOKEN !:", token);
       const response = await axios.get("http://localhost:5000/api/students", {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
       });
-      console.log("response", response);
       setData(response.data);
     } catch (error) {
       console.error("Fetch error:", error);
@@ -68,7 +76,6 @@ const Home = ({ setIsAuthenticated }) => {
     fetchStudents();
   }, []);
 
-  // Add student
   const handleSubmit = async () => {
     try {
       const token = localStorage.getItem("token");
@@ -93,7 +100,6 @@ const Home = ({ setIsAuthenticated }) => {
     }
   };
 
-  // Fetch student data by ID
   const fetchStudentById = async (id) => {
     try {
       const token = localStorage.getItem("token");
@@ -115,7 +121,6 @@ const Home = ({ setIsAuthenticated }) => {
     }
   };
 
-  // Update student
   const handleUpdate = async () => {
     try {
       const token = localStorage.getItem("token");
@@ -140,7 +145,6 @@ const Home = ({ setIsAuthenticated }) => {
     }
   };
 
-  // Delete student
   const handleDelete = async () => {
     try {
       const token = localStorage.getItem("token");
@@ -162,177 +166,184 @@ const Home = ({ setIsAuthenticated }) => {
     }
   };
 
-  // Logout function
   const handleLogout = () => {
     localStorage.removeItem("token");
     setIsAuthenticated(false);
   };
 
   return (
-    <div className="table-container">
-      <nav style={{ backgroundColor: "#fff" }}>
-        <div>
-          <h3 className="logo">tailwebs.</h3>
-        </div>
-        <div className="nav-links">
-          <span>Home</span>
-          <span onClick={handleLogout} style={{ cursor: "pointer" }}>
-            Logout
-          </span>
-        </div>
-      </nav>
-      <table>
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th style={{ borderLeft: "1px solid", borderRight: "1px solid" }}>
-              Subject
-            </th>
-            <th
-              style={{
-                textAlign: "center",
-                borderLeft: "1px solid",
-                borderRight: "1px solid",
-              }}
-            >
-              Mark
-            </th>
-            <th style={{ textAlign: "center" }}>Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          {data.map((item, index) => (
-            <tr key={index}>
-              <td>
-                <div className="name-container">
-                  <div className="avatar">{item.name?.charAt(0)}</div>
-                  <span>{item.name}</span>
-                </div>
-              </td>
-              <td>{item.subject}</td>
-              <td style={{ textAlign: "center" }}>{item.marks}</td>
-              <td style={{ textAlign: "center" }}>
-                <div>
-                  <ArrowDropDownCircleRoundedIcon
-                    sx={{ cursor: "pointer" }}
-                    onClick={(event) => {
-                      setSelectedStudentId(item._id);
-                      fetchStudentById(item._id);
-                      handleClick(event);
-                    }}
-                  />
-                  <Menu
-                    anchorEl={anchorEl}
-                    open={Boolean(anchorEl)}
-                    onClose={handleCloseAction}
-                    sx={{
-                      "& .MuiPaper-root": {
-                        borderRadius: 2,
-                        boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.1)",
-                        minWidth: 150,
-                      },
-                    }}
-                  >
-                    <MenuItem
-                      onClick={() => {
-                        handleCloseAction();
-                        handleOpen();
-                      }}
-                    >
-                      Edit
-                    </MenuItem>
-                    <MenuItem
-                      onClick={() => {
-                        handleDelete();
-                      }}
-                    >
-                      Delete
-                    </MenuItem>
-                  </Menu>
-                </div>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-      <button className="add-btn" onClick={handleOpen}>
-        Add
-      </button>
+    <Box sx={{ p: 3 }}>
+      <AppBar position="static" color="default">
+        <Toolbar sx={{ justifyContent: "space-between" }}>
+          <Typography variant="h6" color="red">
+            tailwebs.
+          </Typography>
+          <Stack direction="row" spacing={2}>
+            <Button color="inherit">Home</Button>
+            <Button color="inherit" onClick={handleLogout}>
+              Logout
+            </Button>
+          </Stack>
+        </Toolbar>
+      </AppBar>
 
-      <Modal
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
-        <Box sx={style}>
-          <label className="label">Name</label>
-          <TextField
-            fullWidth
-            variant="outlined"
-            placeholder="Name"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start" className="icon">
-                  <User />
-                </InputAdornment>
-              ),
-            }}
-            margin="normal"
-          />
-          <label className="label">Subject</label>
-          <TextField
-            fullWidth
-            variant="outlined"
-            placeholder="Subject"
-            value={subject}
-            onChange={(e) => setSubject(e.target.value)}
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start" className="icon">
-                  <SubjectIcon />
-                </InputAdornment>
-              ),
-            }}
-            margin="normal"
-          />
-          <label className="label">Mark</label>
-          <TextField
-            fullWidth
-            variant="outlined"
-            placeholder="Mark"
-            value={mark}
-            onChange={(e) => setMark(e.target.value)}
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start" className="icon">
-                  <BookmarkIcon />
-                </InputAdornment>
-              ),
-            }}
-            margin="normal"
-          />
-          <div style={{ textAlignLast: "center" }}>
+      <Card sx={{ mt: 3 }}>
+        <CardContent>
+          <TableContainer>
+            <Table>
+              <TableHead>
+                <TableRow>
+                  <TableCell>Name</TableCell>
+                  <TableCell align="center">Subject</TableCell>
+                  <TableCell align="center">Mark</TableCell>
+                  <TableCell align="center">Action</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {data.map((item, index) => (
+                  <TableRow key={index}>
+                    <TableCell>
+                      <Stack direction="row" spacing={2} alignItems="center">
+                        <Avatar sx={{ bgcolor: "#2196F3" }}>
+                          {item.name?.charAt(0)}
+                        </Avatar>
+                        <Typography>{item.name}</Typography>
+                      </Stack>
+                    </TableCell>
+                    <TableCell align="center">{item.subject}</TableCell>
+                    <TableCell align="center">{item.marks}</TableCell>
+                    <TableCell align="center">
+                      <IconButton
+                        onClick={(event) => {
+                          setSelectedStudentId(item._id);
+                          fetchStudentById(item._id);
+                          handleClick(event);
+                        }}
+                      >
+                        <ArrowDropDownCircleRoundedIcon
+                          sx={{ borderRadius: "50%", color: "#333" }}
+                        />
+                      </IconButton>
+                      <Menu
+                        anchorEl={anchorEl}
+                        open={Boolean(anchorEl)}
+                        onClose={handleCloseAction}
+                        PaperProps={{
+                          elevation: 1,
+                          sx: {
+                            "& .MuiMenuItem-root": {
+                              minHeight: "32px",
+                              minWidth: "150px",
+                            },
+                          },
+                        }}
+                      >
+                        <MenuItem
+                          onClick={() => {
+                            handleCloseAction();
+                            handleOpen();
+                          }}
+                        >
+                          Edit
+                        </MenuItem>
+                        <MenuItem onClick={handleDelete}>Delete</MenuItem>
+                      </Menu>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+          <Box sx={{ display: "flex", justifyContent: "start", mt: 2 }}>
             <Button
               variant="contained"
-              color="primary"
-              onClick={selectedStudentId ? handleUpdate : handleSubmit}
+              onClick={handleOpen}
               sx={{
-                mt: 3,
-                bgcolor: "#333",
-                width: "70%",
-                padding: "12px",
-                borderRadius: "0px",
+                backgroundColor: "#333",
+                "&:hover": {
+                  backgroundColor: "#555",
+                },
               }}
             >
-              {selectedStudentId ? "Update" : "Add"}
+              Add Student
             </Button>
-          </div>
-        </Box>
-      </Modal>
-    </div>
+          </Box>
+        </CardContent>
+      </Card>
+
+      <Dialog open={open} onClose={handleClose}>
+        <DialogTitle>
+          {selectedStudentId ? "Update Student" : "Add Student"}
+        </DialogTitle>
+        <DialogContent>
+          <Stack spacing={2} mt={2}>
+            <TextField
+              fullWidth
+              variant="outlined"
+              label="Name"
+              placeholder="Name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <User />
+                  </InputAdornment>
+                ),
+              }}
+            />
+            <TextField
+              fullWidth
+              variant="outlined"
+              label="Subject"
+              placeholder="Subject"
+              value={subject}
+              onChange={(e) => setSubject(e.target.value)}
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <SubjectIcon />
+                  </InputAdornment>
+                ),
+              }}
+            />
+            <TextField
+              fullWidth
+              variant="outlined"
+              label="Mark"
+              placeholder="Mark"
+              value={mark}
+              onChange={(e) => setMark(e.target.value)}
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <BookmarkBorderOutlinedIcon />
+                  </InputAdornment>
+                ),
+              }}
+            />
+          </Stack>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose} color="inherit">
+            Cancel
+          </Button>
+          <Button
+            onClick={selectedStudentId ? handleUpdate : handleSubmit}
+            color="primary"
+            variant="contained"
+            sx={{
+              backgroundColor: "#333",
+              "&:hover": {
+                backgroundColor: "#555",
+              },
+            }}
+          >
+            {selectedStudentId ? "Update" : "Add"}
+          </Button>
+        </DialogActions>
+      </Dialog>
+    </Box>
   );
 };
 
