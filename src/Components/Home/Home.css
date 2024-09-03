@@ -1,0 +1,110 @@
+.table-container {
+    margin-top: -20px;
+    margin-bottom: -20px;
+    padding: 20px;
+    background-color: #f0f0f0;
+    border-radius: 8px;
+    /* width: 100%; */
+}
+
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.logo {
+    color: red;
+    font-size: 24px;
+}
+
+.nav-links span {
+    margin: 0 10px;
+    cursor: pointer;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #ffffff;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+th, td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+th {
+    background-color: #f8f8f8;
+    font-weight: bold;
+}
+
+tr:hover {
+    background-color: #f1f1f1;
+}
+
+.name-container {
+    display: flex;
+    align-items: center;
+}
+
+.avatar {
+    width: 30px;
+    height: 30px;
+    background-color: #2196F3;
+    color: #fff;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 10px;
+}
+
+
+.add-btn {
+    background-color: #333;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    cursor: pointer;
+    margin-top: 30px;
+    width: 10%;
+}
+
+.add-btn:hover {
+    background-color: #555;
+}
+
+.action-buttons {
+    width: 100px;
+    border: 1px solid #ccc;
+    position: relative;
+}
+
+.action-list {
+    cursor: pointer;
+    background-color: #fff;
+    padding: 5px 10px;
+}
+
+.action-list:hover {
+    background-color: #f0f0f0;
+}
+
+.icon {
+    border-right: 1px solid rgb(192, 192, 192);
+    padding-right: 15px;
+    width: 18px !important;
+}
+
+.label {
+    display: block;
+    margin-bottom: 5px;
+    color: #333;
+    margin-bottom: -7px;
+    margin-top: 5px;
+}
